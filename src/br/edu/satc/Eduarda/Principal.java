@@ -6,6 +6,7 @@
 package br.edu.satc.Eduarda;
 
 import br.edu.satc.Eduarda.Objeto.Aluno;
+import br.edu.satc.Eduarda.Objeto.Nota;
 import br.edu.satc.Eduarda.Objeto.TipoAvaliacao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -299,53 +300,62 @@ public class Principal extends javax.swing.JFrame {
        nomeAluno = jTFNomedoAluno.getText();
         try {
             matricula = Integer.parseInt(jTFnumeroDaMatricula.getText());
+           
             
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException nfe ){
+            JOptionPane.showMessageDialog(null,nfe);
+              throw new RuntimeException();
         }
-     
        
-       
+      
        Aluno j = new Aluno(nomeAluno,matricula);
        JOptionPane.showMessageDialog(this, j.toString());
+       
+           
+              
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jBcalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBcalcularActionPerformed
-      TipoAvaliacao tipo = null;
-        Aluno a = new Aluno (jTFNomedoAluno.getText(), Integer.parseInt(jTFnumeroDaMatricula.getText()));
-        switch(jCBTipodeAvaliacao.getSelectedIndex()){
-            case 1 :{
-                tipo = TipoAvaliacao.getProva();
-                break;
-            } 
-            
-            case 2:{
-                tipo = TipoAvaliacao.getSeminario();
-                break;
-            
+     TipoAvaliacao tipo = null;
+       Aluno a = new Aluno(jTFNomedoAluno.getText(), Integer.parseInt(jTFnumeroDaMatricula.getText()));
+       switch(jCBTipodeAvaliacao.getSelectedIndex()){
+           case 0:
+           {
+            tipo = TipoAvaliacao.Prova; 
+            break;
+           } 
+           case 1:
+           {
+            tipo = TipoAvaliacao.Trabalho;
+            break;
            }
-            
-            case 3 :{
-                tipo = TipoAvaliacao.getTrabalho();
-                break;
-            
-            }
+           case 2:
+           {
+           tipo = TipoAvaliacao.Seminario;
+           break;
+           }
+           
+       }
+       
+       try {
+       a.getNotas().add(new Nota(jTFnNomedaDisciplina.getText(), tipo, Float.parseFloat(jTFNota1doAluno.getText())));
+       a.getNotas().add(new Nota(jTFnNomedaDisciplina.getText(), tipo, Float.parseFloat(jTFNota2doAluno.getText())));
+       a.getNotas().add(new Nota(jTFnNomedaDisciplina.getText(), tipo, Float.parseFloat(jTFNota3doAluno.getText())));
+       a.getNotas().add(new Nota(jTFnNomedaDisciplina.getText(), tipo, Float.parseFloat(jTFNota4doAluno.getText())));
+       
+       JOptionPane.showMessageDialog(null, a.toString()      
+               + "\n" + "media: " + a.calcularMedia());
+        }catch(NumberFormatException nfe) {
+       JOptionPane.showMessageDialog(null,nfe);
+       }catch (NullPointerException npe){
+        JOptionPane.showMessageDialog(null, npe);
+       throw new RuntimeException();
+       
+       
         
-        }
+       }
         
-       float n1,n2,n3,n4,media;
-       String disciplina, nome;
-       int matricula;
-       
-       
-       
-       matricula =Integer.parseInt(jTFnumeroDaMatricula.getText());
-       n1 = Float.parseFloat(jTFNota1doAluno.getText());
-       n2 = Float.parseFloat(jTFNota2doAluno.getText());
-       n3 = Float.parseFloat(jTFNota3doAluno.getText());
-       n4 = Float.parseFloat(jTFNota4doAluno.getText());
-       disciplina =  jTFnNomedaDisciplina.getText();
-       media  = (n1+n2+n3+n4)/4;
-        JOptionPane.showMessageDialog(null, a.toString()+"media = " + media);
+   
     }//GEN-LAST:event_jBcalcularActionPerformed
 
     private void jCBTipodeAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBTipodeAvaliacaoActionPerformed
